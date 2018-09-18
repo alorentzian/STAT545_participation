@@ -1,6 +1,7 @@
 ---
 title: "Gapminder exploration"
 output: github_document
+
 ---
 
 ```{r setup, include=FALSE}
@@ -22,7 +23,7 @@ summary(cars)
 nrow(gapminder)
 ncol(gapminder)
 names(gapminder)
-summary(gapminder)
+
 
 ``` 
 
@@ -40,6 +41,7 @@ hist(gapminder$lifeExp)
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ```{r}
+summary(gapminder)
 head(gapminder)
 tail(gapminder)
 str(gapminder)
