@@ -6,14 +6,14 @@ library(gapminder)
 library(tidyverse)
 ```
 
-    ## -- Attaching packages ------------------------------------------- tidyverse 1.2.1 --
+    ## -- Attaching packages -------------------------------------------------------- tidyverse 1.2.1 --
 
     ## v ggplot2 3.0.0     v purrr   0.2.5
     ## v tibble  1.4.2     v dplyr   0.7.6
     ## v tidyr   0.8.1     v stringr 1.3.1
     ## v readr   1.1.1     v forcats 0.3.0
 
-    ## -- Conflicts ---------------------------------------------- tidyverse_conflicts() --
+    ## -- Conflicts ----------------------------------------------------------- tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -148,6 +148,14 @@ gsvl + geom_point(aes(size = pop, fill=continent), shape=21, colour="black", alp
 
 ![](cm007-exercise_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
+``` r
+gsvl + geom_point(aes(size=pop, colour=continent)) + 
+  scale_size_area() +
+  facet_wrap(~ year)
+```
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
 # Continue from last time (geom exploration with `x` and `y` aesthetics)
 
 ## Path plots
@@ -167,7 +175,18 @@ gsvl + geom_point(aes(size=pop, colour=continent)) +
   facet_wrap(~ year)
 ```
 
-![](cm007-exercise_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+``` r
+gapminder %>% 
+  filter(country == "Rwanda") %>% 
+  arrange(year) %>% 
+  ggplot(aes(gdpPercap, lifeExp)) +
+  geom_point() +
+  geom_path(arrow=arrow())
+```
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ## Two categorical variables
 
@@ -178,6 +197,15 @@ data frame.
   - `geom_count()`.
   - `geom_bin2d()`. Compare with `geom_tile()` with `fill` aes.
 
+<!-- end list -->
+
+``` r
+ggplot(mtcars, aes(factor(cyl),factor(am))) +
+  geom_bin2d()
+```
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
 ## Overplotting
 
 Try a scatterplot with:
@@ -187,6 +215,41 @@ Try a scatterplot with:
   - `geom_density2d()`
   - `geom_smooth()`
 
+<!-- end list -->
+
+``` r
+gsvl + geom_hex()
+```
+
+    ## Warning: Computation failed in `stat_binhex()`:
+    ## Package `hexbin` required for `stat_binhex`.
+    ## Please install and try again.
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+``` r
+gsvl + geom_density2d()
+```
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+
+``` r
+gsvl + geom_smooth() +
+  geom_point(alpha=0.1)
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
+
+``` r
+gsvl + geom_point(alpha=0.1) + geom_smooth()
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-13-4.png)<!-- -->
+
 ## Bar plots
 
 How many countries are in each continent? Use the year 2007.
@@ -194,6 +257,17 @@ How many countries are in each continent? Use the year 2007.
 1.  After filtering the gapminder data to 2007, make a bar chart of the
     number of countries in each continent. Store everything except the
     geom in the variable `d`.
+
+<!-- end list -->
+
+``` r
+gapminder %>% 
+  filter(year == 2007) %>% 
+  ggplot(aes(x=continent)) +
+  geom_bar()
+```
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 2.  Notice the y-axis. Oddly, `ggplot2` doesn’t make it obvious how to
     change to proportion. Try adding a `y` aesthetic:
@@ -206,6 +280,14 @@ or see the probability mass function of a categorical random variable.
 
   - Add `coord_polar()` to a scatterplot.
 
+<!-- end list -->
+
+``` r
+gsvl + geom_point() + coord_polar()
+```
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
 # Want more practice?
 
 If you’d like some practice, give these exercises a try
@@ -214,6 +296,13 @@ If you’d like some practice, give these exercises a try
 coloured by continent. Then, to that same plot, fit a straight
 regression line to each continent, without the error bars. If you can,
 try piping the data frame into the `ggplot` function.
+
+``` r
+ggplot(gapminder, aes(year, lifeExp)) + 
+  geom_point(aes(colour=continent))
+```
+
+![](cm007-exercise_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 **Exercise 2**: Repeat Exercise 1, but switch the *regression line* and
 *geom\_point* layers. How is this plot different from that of Exercise
